@@ -5,7 +5,10 @@
 #include <sstream>
 #include <fstream>
 
-void ReadCSV(std::vector<std::string> &list, std::string& fileName, char delim);
+void ReadCSV_item (std::vector<std::string> &list, const char* fileName, const char delim);
+void ReadCSV_line (std::vector<std::string> &list, const char* fileName);
+
+void SetData (char const *fileArc, std::string line, char const delim, ...);
 
 
 typedef struct sampleDataT {
@@ -21,4 +24,26 @@ typedef struct sampleDataT {
 	int womanCount;
 
 };
-void MakeData(std::vector<sampleDataT> &datas, int itemCount, std::string fileName);
+void MakeData(std::vector<sampleDataT> &datas, int itemCount, char const * fileName);
+
+/*
+std::vector<sampleDataT> data;
+
+	std::vector<std::string> line;
+	ReadCSV_line (line,"c01.csv");
+
+	for ( int i = 0; i < line.size (); ++i) {
+		sampleDataT lineData;
+		SetData ("dssddddd", line[i], ',',
+			&lineData.code,
+			&lineData.pref,
+			&lineData.age,
+			&lineData.year_jp,
+			&lineData.year,
+			&lineData.total,
+			&lineData.manCount,
+			&lineData.womanCount);
+		data.push_back (lineData);
+	}
+*/
+

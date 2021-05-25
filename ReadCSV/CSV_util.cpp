@@ -42,45 +42,50 @@ void ReadCSV_line(std::vector<std::string> &list, const char* fileName) {
 
 }
 
-void SetData(int intC, int floatC, int strC, std::vector<std::string> &list,char const delim, ...) {
+void SetData(char const *fileArc, std::string line,char const delim, ...) {
+	
 	va_list vl;
 
-	va_start(vl, list);
+	va_start(vl, delim);
 
-	int itemC = intC + floatC + strC;
+	std::istringstream i_stream (line);
+	std::string item;
 
-	for (int i = 0; i < list.size(); ++i) {
+	int count = 0;
 
-		std::istringstream i_stream(list[i]);
-		std::string item;
+	while ( std::getline (i_stream, item, delim) ) {
 
-		int count = 0;
+		std::istringstream ss (item);
 
-		while (std::getline(i_stream, item, delim)) {
-			std::istringstream ss(item);
-
-			if (count < intC) {
+		switch ( fileArc[count] ) {
+			case 'd':
 				ss >> *va_arg (vl, int*);
-			} else if (count - intC < floatC) {
+				break;
+			case 'f':
 				ss >> *va_arg (vl, float*);
-			} else if( count - intC - floatC < strC ){
+				break;
+			case 's':
 				ss >> *va_arg (vl, std::string*);
-			}
-
-			count++;
-			count %= itemC;
-
+				break;
+			default:
+				break;
 		}
+
+		count++;
+		
 
 	}
 
+
+
 }
 
-void MakeData(std::vector<sampleDataT> &datas, int itemCount, std::string fileName) {
+
+void MakeData(std::vector<sampleDataT> &datas, int itemCount, char const * fileName) {
 
 	std::vector<std::string> stringData;
 
-	ReadCSV(stringData, fileName, ',');
+	ReadCSV_item (stringData, fileName, ',');
 
 
 	sampleDataT data;
